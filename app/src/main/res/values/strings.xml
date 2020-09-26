@@ -1,0 +1,48 @@
+<resources>
+    <string name="title_activity_login">Sign in/Register</string>
+    <string name="number">Phone Number</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Continue</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_tabs">tabs</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="message">message</string>
+    <string name="send">SEND</string>
+    <string name="set">SET</string>
+    <string name="title_activity_main2">Main_Navigation_Drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_chat">Chats</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+    <string name="call">Call</string>
+    <string name="groups">Groups</string>
+    <string name="app_name">All Chat</string>
+    <string name="single_and_group_chats_app">Single and Group chats app</string>
+    <string name="title_image">Title Image</string>
+    <string name="single_chats_group_and_calling">Single and Group Chats</string>
+    <string name="fragment_3">fragment_3</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="search">Search</string>
+
+    <string name="title_activity_fullscreen_imageopener">Imageopener</string>
+
+    <string name="title_activity_fullscreen_video_view">FullscreenActivityVideoView</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

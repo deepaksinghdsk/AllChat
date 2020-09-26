@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/theme"
+    android:backgroundTint="#3A1501"
+    android:backgroundTintMode="screen"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context=".loginActivity.verifyNumber">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/circle"
+        android:padding="10dp"
+        android:text="@string/app_name"
+        android:textAllCaps="true"
+        android:textSize="40sp"
+        android:textStyle="italic|bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/loadingOtp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="32dp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/otp"
+            android:layout_width="164dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:hint="@string/enter_otp"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="6"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:textAlignment="center"
+            android:textColor="#D1C9C9"
+            android:textColorHint="#D1C9C9"
+            android:textSize="27sp" />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/circle"
+            android:onClick="check"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/action_sign_in"
+            android:textColor="#C5BABA"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+</LinearLayout>

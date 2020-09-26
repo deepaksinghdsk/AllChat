@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/f1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".chatActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chatToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_border"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:titleMarginStart="0dp"
+        tools:targetApi="lollipop">
+
+        <ImageView
+            android:id="@+id/dp"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginLeft="10sp"
+            android:textSize="22sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--example of printing text view-->
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="5px"
+                android:layout_marginTop="5px"
+                android:layout_marginBottom="5px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:text=""
+                    android:textColor="#3700B3"
+                    android:layout_marginLeft="240px"
+                    android:textSize="30sp"
+                    android:padding="2dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="New Messages"
+                    android:padding="5dp"
+                    android:textSize="25sp"/>
+
+            </LinearLayout>-->
+
+            <!--example of printing image inside a cardView-->
+            <!-- <androidx.cardview.widget.CardView
+                 android:layout_width="300dp"
+                 android:layout_height="300dp"
+                 android:layout_gravity="right"
+                 app:cardBackgroundColor="@color/cardview_dark_background"
+                 android:layout_margin="5dp"
+                 app:cardCornerRadius="10dp">
+
+                 <ImageView
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:background="@drawable/img"
+                     android:layout_margin="20dp"/>
+
+                 <ProgressBar
+                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                     android:layout_width="wrap_content"
+                     android:layout_height="50dp"
+                     android:layout_gravity="center"
+                     android:indeterminate="false"
+                     android:progress="100"
+                     android:progressDrawable="@drawable/circular" />
+
+             </androidx.cardview.widget.CardView>-->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1">
+            <!-- <ScrollView
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:layout_marginRight="10dp"
+                 tools:ignore="NestedWeights"
+                 android:layout_marginEnd="10dp">-->
+
+            <EditText
+                android:id="@+id/et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="Hello,Hi"
+                android:hint="@string/message"
+                android:inputType="text"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="20sp" />
+            <!--   </ScrollView>-->
+        </ScrollView>
+
+        <ImageButton
+            android:id="@+id/ibt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_insert" />
+
+        <Button
+            android:id="@+id/bt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="sendClicked"
+            android:text="@string/send"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

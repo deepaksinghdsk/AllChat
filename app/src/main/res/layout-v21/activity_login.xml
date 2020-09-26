@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/theme"
+    android:backgroundTint="#3A1501"
+    android:backgroundTintMode="screen"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context=".loginActivity.loginActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/circle"
+        android:padding="10dp"
+        android:text="@string/app_name"
+        android:textSize="40sp"
+        android:textStyle="italic|bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border"
+        android:orientation="vertical">
+
+        <!--<ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="32dp"
+            android:visibility="gone" />-->
+
+        <!-- <LinearLayout android:id="@+id/numberLayout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal">-->
+
+        <!--<Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textSize="24sp" />-->
+
+        <EditText
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:drawableStart="@drawable/ic_call_black_24dp"
+            android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:drawablePadding="10dp"
+            android:hint="@string/number"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:paddingStart="20dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="5dp"
+            android:textColor="#D1C9C9"
+            android:textColorHint="#D1C9C9"
+            android:textSize="27sp" />
+
+        <!--</LinearLayout>-->
+
+        <Button
+            android:id="@+id/loginNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/circle"
+            android:onClick="register"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/action_sign_in"
+            android:textColor="#C5BABA"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
