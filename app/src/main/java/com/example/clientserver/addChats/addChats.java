@@ -486,7 +486,7 @@ public class addChats extends AppCompatActivity {
                                                 //smsIntent.putExtra(Intent.EXTRA_TEXT, "Check out ChatApp, I use it to message the people I care about. Get it for free at Google.com");
                                                 //smsIntent.setType("text/plain");
                                                 smsIntent.setData(Uri.parse("smsto:" + number));
-                                                smsIntent.putExtra("sms_body", "Check out ChatApp, I use it to message the people I care about. Get it for free at https://www.blogger.com/blog/posts/3647031630175034920");
+                                                smsIntent.putExtra("sms_body", "Check out ChatApp, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
                                                 if (smsIntent.resolveActivity(getPackageManager()) != null) {
                                                     Log.e(tag, "Action_sendTo Intent is resolved");
                                                     startActivity(smsIntent);
