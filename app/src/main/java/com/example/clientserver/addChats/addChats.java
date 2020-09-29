@@ -525,7 +525,7 @@ public class addChats extends AppCompatActivity {
                             Toast.makeText(c, "This number already exists in chatActivity.", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(c, "Checking this number in database is already in progress", Toast.LENGTH_LONG).show();
+                        Toast.makeText(c, "Internet is slow, this number is already being checked in database.", Toast.LENGTH_LONG).show();
                     }
                 }
             });

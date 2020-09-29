@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity
         tl.setSelectedTabIndicatorColor(Color.BLUE);
 
         final ViewPager vp = findViewById(R.id.vp);
-
         final viewPagerAdapter pa = new viewPagerAdapter(getSupportFragmentManager(), tl.getTabCount());
         vp.setAdapter(pa);
 
@@ -124,6 +123,8 @@ public class MainActivity extends AppCompatActivity
         };
 
         tl.addOnTabSelectedListener(listener);
+
+        vp.setCurrentItem(getIntent().getIntExtra("tab",0));
     }
 
     void readContacts() {
@@ -209,6 +210,7 @@ public class MainActivity extends AppCompatActivity
             //messenger = new Messenger(service);
             bind = true;
 
+            //this will get cloud messaging unique id and store it in firebase database
             FirebaseInstanceId.getInstance().getInstanceId()
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                         @Override

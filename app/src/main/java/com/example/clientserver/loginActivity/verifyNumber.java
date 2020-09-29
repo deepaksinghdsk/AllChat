@@ -69,7 +69,14 @@ public class verifyNumber extends AppCompatActivity {
         if (otp.length() == 6) {
             loading.setVisibility(View.VISIBLE);
             bt.setVisibility(View.GONE);
-            verifyVerificationCode(otp);
+            try{
+                verifyVerificationCode(otp);
+            }catch(Exception e) {
+                Log.e("verifynumber","error: while verifying number");
+                e.getStackTrace();
+                Toast.makeText(this,"Incorrect phone number or check your internet connectivity!!!",Toast.LENGTH_LONG).show();
+                finish();
+            }
         } else et.setError("Enter a valid OTP");
     }
 
@@ -111,7 +118,7 @@ public class verifyNumber extends AppCompatActivity {
                 }
             };
 
-    void verifyVerificationCode(String code) {
+    void verifyVerificationCode(String code)                                                 {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
 
         //now sign in to mainActivity if authentication gets successful
@@ -125,6 +132,7 @@ public class verifyNumber extends AppCompatActivity {
 
                             final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
 
+                            //here check if this user is an existing user or if not then assign it new id
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -140,13 +148,13 @@ public class verifyNumber extends AppCompatActivity {
                                         }
                                     }
 
-                                    //if this user is not an existing user
+                                    //if this user is not an existing user, assign new id to it
                                     if (!foundInDatabase) {
                                         long last_id = (long) snapshot.child("last_id").getValue();
                                         mid = ((int) last_id) + 1;
 
                                         Toast.makeText(c, "Your default name is 'unknown'\nyou can change it any time from settings.", Toast.LENGTH_SHORT).show();
-                                        addNewUserInfo data = new addNewUserInfo(number.substring(3),"");
+                                        addNewUserInfo data = new addNewUserInfo(number.substring(3), "");
                                         myRef.child(String.valueOf(mid)).setValue(data);
                                         myRef.child("last_id").setValue(mid);
                                     }
@@ -187,7 +195,7 @@ public class verifyNumber extends AppCompatActivity {
                                                     groupId = oldGroups;
                                                     Log.i("verifyNumber", "inside outside of while loop in listening for new Groups values");
                                                     lastGroupIdNumber = pref.getInt("lastGroupId", 0) + 1;
-                                                    Log.d("verifyNumber", groupId + " this new group is added, lastGroupIdNumber = " + lastGroupIdNumber);
+                                                    Log.d("verifyNumber", groupId + " this old group is added at lastGroupIdNumber = " + lastGroupIdNumber);
                                                     edit.putString(String.valueOf(lastGroupIdNumber), groupId);
                                                     //edit.putString(String.valueOf(lastGroupIdNumber), groupId);
                                                     //edit.putInt((lastGroupIdNumber) + "'sMessageTobeRead", 1);
@@ -196,17 +204,17 @@ public class verifyNumber extends AppCompatActivity {
                                                     edit.apply();
                                                 }
 
-                                                myRef.child(String.valueOf(mid)).child("newGroups").setValue("");
+                                                //myRef.child(String.valueOf(mid)).child("newGroups").setValue("");
                                             }
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
-
+                                            Log.e("verifyNumber", error.getDetails());
                                         }
                                     });
 
-                                    Intent intent = new Intent(verifyNumber.this, MainActivity.class);
+                                    Intent intent = new Intent(verifyNumber.this, walkThrough.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK & Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 }

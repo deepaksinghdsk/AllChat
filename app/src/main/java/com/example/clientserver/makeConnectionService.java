@@ -150,10 +150,28 @@ public class makeConnectionService extends Service {
                     int messageTobeRead = 1, lastGroupIdNumber;
 
                     SharedPreferences.Editor edit = pref.edit();
-                    if (!newGroups.equals("null")) {
+                    if (!newGroups.equals("null") && !newGroups.equals("")) {
 
-                        //add these new Groups in oldGroups value, so that when even the user logs in again these groups will be added again
-                        myRef.child(String.valueOf(mid)).child("oldGroups").setValue(newGroups);
+                        //add these new Groups in oldGroups value, so that when even the user logs in again after deleting this application
+                        // these groups will be added again
+                        final String finalNewGroups = newGroups;
+                        myRef.child(String.valueOf(mid)).child("oldGroups").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String oldgroup = String.valueOf(snapshot.getValue());
+                                if (oldgroup.length() > 4) {
+                                    oldgroup = oldgroup + "," + finalNewGroups;
+                                } else {
+                                    oldgroup = finalNewGroups;
+                                }
+                                myRef.child(String.valueOf(mid)).child("oldGroups").setValue(oldgroup);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                         while (newGroups.contains(",")) {
                             //getting groupIds from database and separate them with ',' in them...
@@ -490,55 +508,10 @@ public class makeConnectionService extends Service {
                                                 //send notification to task bar
                                                 Log.i(tag, "before sending notification, number of notifications = " + numberOfNotifications);
                                                 if (numberOfNotifications > 0) {
-                                                    Log.d(tag, "inside message triggering block, started triggering message");
-                                                    Intent resultIntent = new Intent(c, MainActivity.class);
-                                                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
-                                                    stackBuilder.addNextIntentWithParentStack(resultIntent);
-                                                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                                                    NotificationManager notificationManager = (NotificationManager) c.getSystemService(NOTIFICATION_SERVICE);
-                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
-                                                        NotificationChannel notificationChannel = new
-                                                                NotificationChannel("id", "messages", NotificationManager.IMPORTANCE_HIGH);
-
-                                                        //notificationChannel.setDescription("no sound");
-                                                        //notificationChannel.setSound(null, null);
-                                                        notificationChannel.enableLights(true);
-                                                        notificationChannel.setLightColor(Color.BLUE);
-                                                        notificationChannel.enableVibration(true);
-
-                                                        notificationManager.createNotificationChannel(notificationChannel);
-                                                    }
-
-                                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(c.getApplicationContext(), "id");
-                                                    builder.setSmallIcon(R.mipmap.ic_launcher_test_round);
-                                                    builder.setContentTitle("All Chat");
-                                                    builder.setGroup("allChatGroup");
-                                                    builder.setSortKey("Message received from " + name);
-                                                    //builder.setGroupSummary(true);
-                                                    builder.setContentText((numberOfNotifications == 1 ? "1 new message" :
-                                                            numberOfNotifications + " new messages") + " from " + name + " received");
-                                                    builder.setStyle(new NotificationCompat.BigTextStyle()
-                                                            .bigText((numberOfNotifications == 1 ? "1 new message" :
-                                                                    numberOfNotifications + " new messages") +
-                                                                    " from " + name + " received\nclick here to view messages"));
-
-                                                    Uri path = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                                    builder.setSound(path);
-                                                    //builder.setVibrate(new long[]{0, 500, 1000});
-                                                    builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-                                                                            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                                                                                builder.setPriority(NotificationManager.IMPORTANCE_HIGH);
-                                                                            else*/
-                                                    builder.setPriority(Notification.PRIORITY_MAX);
-                                                    builder.setAutoCancel(true);
-                                                    builder.setContentIntent(resultPendingIntent);
-
-
-                                                    if (notificationManager != null) {
-                                                        notificationManager.notify(0, builder.build());
-                                                        Log.i(tag, "notification sent successfully");
-                                                    }
+                                                    if (finalWritersId.contains("group"))
+                                                        sendNotification(1, "id", numberOfNotifications, name);
+                                                    else
+                                                        sendNotification(0, "id", numberOfNotifications, name);
                                                 }
                                             }
 
@@ -661,18 +634,79 @@ public class makeConnectionService extends Service {
         }
     }
 
+    private void sendNotification(int tabPosition, String channelId, int numberOfNotifications, String name) {
+        Log.d(tag, "inside message triggering block, started triggering message");
+        Intent resultIntent = new Intent(c, MainActivity.class);
+        if (tabPosition == 1)
+            resultIntent.putExtra("tab", 1);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(c);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager notificationManager = (NotificationManager) c.getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
+            NotificationChannel notificationChannel = new
+                    NotificationChannel(channelId, "messages", NotificationManager.IMPORTANCE_HIGH);
+
+            //notificationChannel.setDescription("no sound");
+            //notificationChannel.setSound(null, null);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.BLUE);
+            notificationChannel.enableVibration(true);
+
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(c.getApplicationContext(), "id");
+        builder.setSmallIcon(R.mipmap.androidstudio);
+        builder.setContentTitle("All Chat");
+        builder.setGroup("allChatGroup");
+        builder.setSortKey("Message received from " + name);
+        //builder.setGroupSummary(true);
+        if (tabPosition == 0) {
+            builder.setContentText((numberOfNotifications == 1 ? "1 new message" :
+                    numberOfNotifications + " new messages") + " from " + name + " received");
+            builder.setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText((numberOfNotifications == 1 ? "1 new message" :
+                            numberOfNotifications + " new messages") +
+                            " from " + name + " received\nclick here to view messages"));
+        } else if (tabPosition == 1) {
+            builder.setContentText((numberOfNotifications == 1 ? "1 new message" :
+                    numberOfNotifications + " new messages") + " from " + name + " group received");
+            builder.setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText((numberOfNotifications == 1 ? "1 new message" :
+                            numberOfNotifications + " new messages") +
+                            " from " + name + " group received\nclick here to view messages"));
+        }
+        Uri path = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(path);
+        //builder.setVibrate(new long[]{0, 500, 1000});
+        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                                                                            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                                                                                builder.setPriority(NotificationManager.IMPORTANCE_HIGH);
+                                                                            else*/
+        builder.setPriority(Notification.PRIORITY_MAX);
+        builder.setAutoCancel(true);
+        builder.setContentIntent(resultPendingIntent);
+
+
+        if (notificationManager != null) {
+            notificationManager.notify(0, builder.build());
+            Log.i(tag, "notification sent successfully");
+        }
+    }
+
     ValueEventListener listenerForGroups(final String groupId, final int messageTobeRead, final int groupIdNumber) {
 
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.i(tag, snapshot.getKey() + " file of " + groupId + " exists = " + snapshot.exists());
-                if (snapshot.exists() && !reading) {
+                if (snapshot.exists()) {
                     //as this message has been read close event listener for this message
                     myRef.child(groupId).child("temp_message" + messageTobeRead)
                             .removeEventListener(this);
-
-                    reading = true;
+                    //reading = true;
 
                     //Log.i(tag, "started listening for messages from database for groupIdNumber = " + groupIdNumber);
                     Log.i(tag, "new message is written by " + snapshot.child("writtenBy").getValue() + ", and my id = " + mid);
@@ -714,6 +748,7 @@ public class makeConnectionService extends Service {
         }
     }
 
+    //update push notification id in firebase database
     void updateNotificationId(String id) {
         myRef.child(String.valueOf(mid)).child("notification_id").setValue(id);
     }

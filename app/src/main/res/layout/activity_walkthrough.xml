@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".loginActivity.walkThrough">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/circle"
+        android:padding="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/walkthrough" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:background="#C5C2C2"
+        android:text="Click on name of the chat to chat messaging with them"
+        android:textColor="#C3000000"
+        android:textSize="25sp"
+        android:padding="5dp"
+        android:textStyle="bold|normal"
+        android:drawableLeft="@drawable/important"
+        android:drawableStart="@drawable/important" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/circle"
+        android:onClick="goToMainActivity"
+        android:text="Get Started"
+        android:textSize="20sp" />
+
+</LinearLayout>
