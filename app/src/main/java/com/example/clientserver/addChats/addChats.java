@@ -335,17 +335,11 @@ public class addChats extends AppCompatActivity {
                 public void onClick(View v) {
                     Log.i("addChats.Holder", "Inside setOnClickListener");
 
-                    if (!info.getChecked()) {
-
-                        //indicating that checking this number in database is already in progress
-                        info.setChecked(true);
-
-                        //info.getNumber().trim().replaceAll("\\s+", "")
                         final String number = info.getNumber().trim();
                         Log.i(tag, "phone number from contact list = " + number);
 
                         if (!info.getUserExists()) {
-                            Log.i(tag, "user does't exists, now adding it");
+                            Log.i(tag, "user does't exists, now checking it in database.");
 
                             //now check in firebase database if user with this phone number exists
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -408,14 +402,19 @@ public class addChats extends AppCompatActivity {
                                                     }
                                                 });
 
+                                                //set userAdded to true so that sms will not be sent to current number as
+                                                //it already exists in firebase database.
                                                 userAdded = true;
+
                                                 //get out of this activity
                                                 back();
+
                                                 //break out of for loop
                                                 break;
-                                            } else if (tabPosition == 1 && usersToBeAddedInGroup.size() < 300) {
+                                            } else if (tabPosition == 1 && usersToBeAddedInGroup.size() < 100) {
+                                                //if this user is already added in group then remove it else add it
                                                 if (info.getChecked()) {
-                                                    Log.d(tag, "inside tick is checked");
+                                                    Log.d(tag, "inside tick is already checked");
                                                     holder.tick.setChecked(false);
                                                     info.setChecked(false);
 
@@ -424,19 +423,14 @@ public class addChats extends AppCompatActivity {
                                                             usersToBeAddedInGroup.remove(info);
                                                     }
 
-                                                /*usersToBeAddedInGroup.remove(new contactsInfo(String.valueOf(holder.name.getText()),
-                                                        String.valueOf(holder.number.getText()),
-                                                        String.valueOf(data.child("newGroups").getValue()),
-                                                        idOfNumber));*/
-
-                                                    if (usersToBeAddedInGroup.size() < 1) {
+                                                    if (usersToBeAddedInGroup.size() < 3) {
                                                         floatingActionButton.setVisibility(View.GONE);
                                                     }
                                                 } else {
                                                     boolean exists = false;
                                                     Log.d(tag, "inside tick is not checked");
                                                     for (contactsInfo info : usersToBeAddedInGroup) {
-                                                        if (info.getNumber().equals(holder.number.getText().toString())) {
+                                                        if (info.getNumber().equals(String.valueOf(holder.number.getText()))) {
                                                             exists = true;
                                                             break;
                                                         }
@@ -454,16 +448,23 @@ public class addChats extends AppCompatActivity {
                                                         if (floatingActionButton.getVisibility() == View.GONE)
                                                             floatingActionButton.setVisibility(View.VISIBLE);
                                                     } else
-                                                        Toast.makeText(c, "user is already added", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(c, "User is already added", Toast.LENGTH_SHORT).show();
                                                 }
 
+                                                //set userAdded to true so that sms will not be sent to current number as
+                                                //it already exists in firebase database.
                                                 userAdded = true;
 
-                                                //break out of for loop
+                                                //break out of the main for loop
                                                 break;
                                             } else {
-                                                Toast.makeText(c, "A group can't contain more than 300 participants", Toast.LENGTH_SHORT).show();
-                                                //break out of for loop
+                                                Toast.makeText(c, "A group can't contain more than 100 participants", Toast.LENGTH_SHORT).show();
+
+                                                //set userAdded to true so that sms will not be sent to current number as
+                                                //it already exists in firebase database.
+                                                userAdded = true;
+
+                                                //break out of the main for loop
                                                 break;
                                             }
                                         }
@@ -473,11 +474,10 @@ public class addChats extends AppCompatActivity {
                                     if (!userAdded) {
                                         Toast.makeText(c, "No such user found", Toast.LENGTH_SHORT).show();
                                         Log.d(tag, "No such user found, user info = " + info.getName());
-                                        userAdded = false;
 
                                         AlertDialog.Builder builder = new AlertDialog.Builder(addChats.this);
                                         builder.setCancelable(true);
-                                        builder.setTitle("Ask this contact to start using this application.");
+                                        builder.setTitle("Send this contact SMS to start using this application?");
                                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -486,7 +486,7 @@ public class addChats extends AppCompatActivity {
                                                 //smsIntent.putExtra(Intent.EXTRA_TEXT, "Check out ChatApp, I use it to message the people I care about. Get it for free at Google.com");
                                                 //smsIntent.setType("text/plain");
                                                 smsIntent.setData(Uri.parse("smsto:" + number));
-                                                smsIntent.putExtra("sms_body", "Check out ChatApp, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
+                                                smsIntent.putExtra("sms_body", "Check out AllChat, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
                                                 if (smsIntent.resolveActivity(getPackageManager()) != null) {
                                                     Log.e(tag, "Action_sendTo Intent is resolved");
                                                     startActivity(smsIntent);
@@ -503,16 +503,10 @@ public class addChats extends AppCompatActivity {
                                             }
                                         });
                                         builder.create().show();
-
-                                        //if (ContextCompat.checkSelfPermission(c, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-
-                                        // } else {
-                                        //    Toast.makeText(c, "permission not granted to send invite to your contacts.", Toast.LENGTH_LONG).show();
-                                        //}
                                     }
 
-                                    info.setChecked(false);
-                                    //if (tabPosition == 0) back();
+                                    //set this userAdded to false so that next time we can check if that user exists or not
+                                    userAdded = false;
                                 }
 
                                 @Override
@@ -524,9 +518,8 @@ public class addChats extends AppCompatActivity {
                         } else {
                             Toast.makeText(c, "This number already exists in chatActivity.", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(c, "Internet is slow, this number is already being checked in database.", Toast.LENGTH_LONG).show();
-                    }
+
+                        //Toast.makeText(c, "Internet is slow, this number is already being checked in database.", Toast.LENGTH_LONG).show();
                 }
             });
         }

@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity
             tab.select();*/
         } else if (id == R.id.share) {
             Intent smsIntent = new Intent(Intent.ACTION_SEND);
-            smsIntent.putExtra(Intent.EXTRA_TEXT, "Check out ChatApp, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
+            smsIntent.putExtra(Intent.EXTRA_TEXT, "Check out AllChat, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
             smsIntent.setType("text/plain");
             if (smsIntent.resolveActivity(getPackageManager()) != null) {
                 startActivity(smsIntent);
