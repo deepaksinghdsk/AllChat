@@ -9,4 +9,4 @@
  * And if you have configured firebase from android studio setled up these services of firebase as mentioned above than all is good now start entending this project, else if you have't configured firebase with android studio than its important to put google-services.json file in app directory of this project you will get option of downloading this file when you will create project in firebase or as mentioned above if you are using android studio to configure firebase than you don't have to worry about it.
  
 
-[Link to my Youtube video describing this app](https://youtu.be/BnU5vmajlLE)
+[Link to cliped Youtube video of me describing this app]([https://youtu.be/BnU5vmajlLE](https://youtube.com/clip/UgkxPxlnsw66ftSbGKe_GquhUDt3FkuKsgTN))
