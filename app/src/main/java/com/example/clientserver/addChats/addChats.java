@@ -335,28 +335,28 @@ public class addChats extends AppCompatActivity {
                 public void onClick(View v) {
                     Log.i("addChats.Holder", "Inside setOnClickListener");
 
-                        final String number = info.getNumber().trim();
-                        Log.i(tag, "phone number from contact list = " + number);
+                    final String number = info.getNumber().trim();
+                    Log.i(tag, "phone number from contact list = " + number);
 
-                        if (!info.getUserExists()) {
-                            Log.i(tag, "user does't exists, now checking it in database.");
+                    if (!info.getUserExists()) {
+                        Log.i(tag, "user does't exists, now checking it in database.");
 
-                            //now check in firebase database if user with this phone number exists
-                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    Log.i(tag, "inside onDataChange in single event listener");
+                        //now check in firebase database if user with this phone number exists
+                        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Log.i(tag, "inside onDataChange in single event listener");
 
-                                    //iterating through all user information in database
-                                    for (DataSnapshot data : snapshot.getChildren()) {
-                                        if (String.valueOf(data.child("phone_number").getValue()).equals(number)) {
-                                            Log.i(tag, "id : " + data.getKey() + "\nnumber in database = " + data.child("phone_number").getValue());
-                                            final String idOfNumber = data.getKey();
+                                //iterating through all user information in database
+                                for (DataSnapshot data : snapshot.getChildren()) {
+                                    if (String.valueOf(data.child("phone_number").getValue()).equals(number)) {
+                                        Log.i(tag, "id : " + data.getKey() + "\nnumber in database = " + data.child("phone_number").getValue());
+                                        final String idOfNumber = data.getKey();
 
-                                            Log.i(tag, number + " found in database");
-                                            if (tabPosition == 0) {
+                                        Log.i(tag, number + " found in database");
+                                        if (tabPosition == 0) {
 
-                                                //first check if user already exists in usersInfo file
+                                            //first check if user already exists in usersInfo file
                                                /* try {
                                                     File reader = new File(rootPath, "usersInfo");
                                                     if (!reader.exists()) {
@@ -377,149 +377,149 @@ public class addChats extends AppCompatActivity {
                                                     e.printStackTrace();
                                                 }*/
 
-                                                try {
-                                                    if (db.getData(idOfNumber) == -1) {
-                                                        boolean insertedInDatabase = db.insertData(idOfNumber, 0);
-                                                        Log.d(tag, "inserted in database = " + insertedInDatabase);
-                                                    } else {
-                                                        Toast.makeText(c, "This user is already added", Toast.LENGTH_SHORT).show();
-                                                        userAdded = true;
-                                                        //get out of this activity
-                                                        back();
-                                                        //break out of for loop
+                                            try {
+                                                if (db.getData(idOfNumber) == -1) {
+                                                    boolean insertedInDatabase = db.insertData(idOfNumber, 0);
+                                                    Log.d(tag, "inserted in database = " + insertedInDatabase);
+                                                } else {
+                                                    Toast.makeText(c, "This user is already added", Toast.LENGTH_SHORT).show();
+                                                    userAdded = true;
+                                                    //get out of this activity
+                                                    back();
+                                                    //break out of for loop
+                                                    break;
+                                                }
+                                            } catch (Exception e) {
+                                                e.getStackTrace();
+                                            }
+
+                                            addNewUser(info.getName(), idOfNumber, "chat");
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    //calling update method of recycler adapter so that it updates its cardViews
+                                                    fragmentUpdater1.add(idOfNumber, info.getName(), 0, "person", 0);
+                                                }
+                                            });
+
+                                            //set userAdded to true so that sms will not be sent to current number as
+                                            //it already exists in firebase database.
+                                            userAdded = true;
+
+                                            //get out of this activity
+                                            back();
+
+                                            //break out of for loop
+                                            break;
+                                        } else if (tabPosition == 1 && usersToBeAddedInGroup.size() < 100) {
+                                            //if this user is already added in group then remove it else add it
+                                            if (info.getChecked()) {
+                                                Log.d(tag, "inside tick is already checked");
+                                                holder.tick.setChecked(false);
+                                                info.setChecked(false);
+
+                                                for (contactsInfo info : usersToBeAddedInGroup) {
+                                                    if (info.getId().equals(idOfNumber))
+                                                        usersToBeAddedInGroup.remove(info);
+                                                }
+
+                                                if (usersToBeAddedInGroup.size() < 3) {
+                                                    floatingActionButton.setVisibility(View.GONE);
+                                                }
+                                            } else {
+                                                boolean exists = false;
+                                                Log.d(tag, "inside tick is not checked");
+                                                for (contactsInfo info : usersToBeAddedInGroup) {
+                                                    if (info.getNumber().equals(String.valueOf(holder.number.getText()))) {
+                                                        exists = true;
                                                         break;
                                                     }
-                                                } catch (Exception e) {
-                                                    e.getStackTrace();
                                                 }
 
-                                                addNewUser(info.getName(), idOfNumber, "chat");
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        //calling update method of recycler adapter so that it updates its cardViews
-                                                        fragmentUpdater1.add(idOfNumber, info.getName(), 0, "person", 0);
-                                                    }
-                                                });
-
-                                                //set userAdded to true so that sms will not be sent to current number as
-                                                //it already exists in firebase database.
-                                                userAdded = true;
-
-                                                //get out of this activity
-                                                back();
-
-                                                //break out of for loop
-                                                break;
-                                            } else if (tabPosition == 1 && usersToBeAddedInGroup.size() < 100) {
-                                                //if this user is already added in group then remove it else add it
-                                                if (info.getChecked()) {
-                                                    Log.d(tag, "inside tick is already checked");
-                                                    holder.tick.setChecked(false);
-                                                    info.setChecked(false);
-
-                                                    for (contactsInfo info : usersToBeAddedInGroup) {
-                                                        if (info.getId().equals(idOfNumber))
-                                                            usersToBeAddedInGroup.remove(info);
-                                                    }
-
-                                                    if (usersToBeAddedInGroup.size() < 3) {
-                                                        floatingActionButton.setVisibility(View.GONE);
-                                                    }
-                                                } else {
-                                                    boolean exists = false;
-                                                    Log.d(tag, "inside tick is not checked");
-                                                    for (contactsInfo info : usersToBeAddedInGroup) {
-                                                        if (info.getNumber().equals(String.valueOf(holder.number.getText()))) {
-                                                            exists = true;
-                                                            break;
-                                                        }
-                                                    }
-
-                                                    if (!exists) {
-                                                        holder.tick.setChecked(true);
-                                                        info.setChecked(true);
-                                                        usersToBeAddedInGroup.add(new contactsInfo(String.valueOf(holder.name.getText()),
-                                                                String.valueOf(holder.number.getText()),
-                                                                String.valueOf(data.child("newGroups").getValue()),
-                                                                String.valueOf(data.child("oldGroups").getValue()),
-                                                                idOfNumber));
-                                                        Log.d(tag, "previous groups value = " + data.child("newGroups").getValue());
-                                                        if (floatingActionButton.getVisibility() == View.GONE)
-                                                            floatingActionButton.setVisibility(View.VISIBLE);
-                                                    } else
-                                                        Toast.makeText(c, "User is already added", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                                //set userAdded to true so that sms will not be sent to current number as
-                                                //it already exists in firebase database.
-                                                userAdded = true;
-
-                                                //break out of the main for loop
-                                                break;
-                                            } else {
-                                                Toast.makeText(c, "A group can't contain more than 100 participants", Toast.LENGTH_SHORT).show();
-
-                                                //set userAdded to true so that sms will not be sent to current number as
-                                                //it already exists in firebase database.
-                                                userAdded = true;
-
-                                                //break out of the main for loop
-                                                break;
+                                                if (!exists) {
+                                                    holder.tick.setChecked(true);
+                                                    info.setChecked(true);
+                                                    usersToBeAddedInGroup.add(new contactsInfo(String.valueOf(holder.name.getText()),
+                                                            String.valueOf(holder.number.getText()),
+                                                            String.valueOf(data.child("newGroups").getValue()),
+                                                            String.valueOf(data.child("oldGroups").getValue()),
+                                                            idOfNumber));
+                                                    Log.d(tag, "previous groups value = " + data.child("newGroups").getValue());
+                                                    if (floatingActionButton.getVisibility() == View.GONE)
+                                                        floatingActionButton.setVisibility(View.VISIBLE);
+                                                } else
+                                                    Toast.makeText(c, "User is already added", Toast.LENGTH_SHORT).show();
                                             }
+
+                                            //set userAdded to true so that sms will not be sent to current number as
+                                            //it already exists in firebase database.
+                                            userAdded = true;
+
+                                            //break out of the main for loop
+                                            break;
+                                        } else {
+                                            Toast.makeText(c, "A group can't contain more than 100 participants", Toast.LENGTH_SHORT).show();
+
+                                            //set userAdded to true so that sms will not be sent to current number as
+                                            //it already exists in firebase database.
+                                            userAdded = true;
+
+                                            //break out of the main for loop
+                                            break;
                                         }
                                     }
-
-                                    //if user not exists in firebase database than send that contact a sms
-                                    if (!userAdded) {
-                                        Toast.makeText(c, "No such user found", Toast.LENGTH_SHORT).show();
-                                        Log.d(tag, "No such user found, user info = " + info.getName());
-
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(addChats.this);
-                                        builder.setCancelable(true);
-                                        builder.setTitle("Send this contact SMS to start using this application?");
-                                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-                                                //smsIntent.putExtra(Intent.EXTRA_TEXT, "Check out ChatApp, I use it to message the people I care about. Get it for free at Google.com");
-                                                //smsIntent.setType("text/plain");
-                                                smsIntent.setData(Uri.parse("smsto:" + number));
-                                                smsIntent.putExtra("sms_body", "Check out AllChat, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
-                                                if (smsIntent.resolveActivity(getPackageManager()) != null) {
-                                                    Log.e(tag, "Action_sendTo Intent is resolved");
-                                                    startActivity(smsIntent);
-                                                } else {
-                                                    Log.e(tag, "Can't resolve app for Action_SendTo Intent");
-                                                }
-                                            }
-                                        });
-                                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                ;
-                                            }
-                                        });
-                                        builder.create().show();
-                                    }
-
-                                    //set this userAdded to false so that next time we can check if that user exists or not
-                                    userAdded = false;
                                 }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    Log.e("tag", "unable to read data from firebase database, check below logs");
-                                    error.getDetails();
-                                }
-                            });
-                        } else {
-                            Toast.makeText(c, "This number already exists in chatActivity.", Toast.LENGTH_SHORT).show();
-                        }
+                                //if user not exists in firebase database than send that contact a sms
+                                if (!userAdded) {
+                                    Toast.makeText(c, "No such user found", Toast.LENGTH_SHORT).show();
+                                    Log.d(tag, "No such user found, user info = " + info.getName());
 
-                        //Toast.makeText(c, "Internet is slow, this number is already being checked in database.", Toast.LENGTH_LONG).show();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(addChats.this);
+                                    builder.setCancelable(true);
+                                    builder.setTitle("Send this contact SMS to start using this application?");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+                                            //smsIntent.putExtra(Intent.EXTRA_TEXT, "Check out ChatApp, I use it to message the people I care about. Get it for free at Google.com");
+                                            //smsIntent.setType("text/plain");
+                                            smsIntent.setData(Uri.parse("smsto:" + number));
+                                            smsIntent.putExtra("sms_body", "Check out AllChat, I use it to message the people I care about. Get it for free at https://github.com/deepaksinghdsk/AllChat/releases/download/v1.0/AllChat.apk");
+                                            if (smsIntent.resolveActivity(getPackageManager()) != null) {
+                                                Log.e(tag, "Action_sendTo Intent is resolved");
+                                                startActivity(smsIntent);
+                                            } else {
+                                                Log.e(tag, "Can't resolve app for Action_SendTo Intent");
+                                            }
+                                        }
+                                    });
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            ;
+                                        }
+                                    });
+                                    builder.create().show();
+                                }
+
+                                //set this userAdded to false so that next time we can check if that user exists or not
+                                userAdded = false;
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("tag", "unable to read data from firebase database, check below logs");
+                                error.getDetails();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(c, "This number already exists in chatActivity.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    //Toast.makeText(c, "Internet is slow, this number is already being checked in database.", Toast.LENGTH_LONG).show();
                 }
             });
         }

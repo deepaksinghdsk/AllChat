@@ -736,7 +736,7 @@ public class makeConnectionService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
+        // Return the communication channel to the service.
         Log.i(tag, "inside onBind");
         return myBinder;
         //return messenger.getBinder();
@@ -789,7 +789,7 @@ public class makeConnectionService extends Service {
         handler.sendMessage(msg);
 
         // If we get killed, after returning from here, restart
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     static public void setFragment1(updater c) {

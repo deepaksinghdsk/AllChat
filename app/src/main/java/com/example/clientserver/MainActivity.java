@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         tl.addOnTabSelectedListener(listener);
 
-        vp.setCurrentItem(getIntent().getIntExtra("tab",0));
+        vp.setCurrentItem(getIntent().getIntExtra("tab", 0));
     }
 
     void readContacts() {
