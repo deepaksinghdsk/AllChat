@@ -11,7 +11,7 @@
 
 [Link to cliped Youtube video of me describing this app https://youtube.com/clip/UgkxPxlnsw66ftSbGKe_GquhUDt3FkuKsgTN](https://youtube.com/clip/UgkxPxlnsw66ftSbGKe_GquhUDt3FkuKsgTN)
 
-#Screen-Shots
+# Screen-Shots
 
 <image align="left" width="300" src="./screenshots/1.png">
 <image align="center" width="300" src="./screenshots/2.png">
@@ -25,7 +25,7 @@
 <image align="center" width="300" src="./screenshots/6.png">
 
 <br><br>
-<image align="left" width="300" src="./screenshots/7png">
+<image align="left" width="300" src="./screenshots/7.png">
 <image align="center" width="300" src="./screenshots/8.png">
 
 <br><br>
